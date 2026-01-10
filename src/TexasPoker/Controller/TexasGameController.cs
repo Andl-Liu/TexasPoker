@@ -85,7 +85,7 @@ namespace TexasPoker.Controller
             _bettingManager = new BettingManager(smallBlind, bigBlind);
             _deck = new Deck();
             _pot = new Pot();
-            _communityCards = new List<Card>();
+            _communityCards = [];
         }
 
         // -- 主驱动循环 --

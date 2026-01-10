@@ -29,7 +29,7 @@ namespace TexasPoker.AI.Strategies
 
             // 诈唬
             if (Random.Shared.NextDouble() < npc.BluffFrequency) {
-                Debug.Print("诈唬");
+                Debug.Print($"诈唬：{npc.Name} StrategyEngine.Decide()");
                 return new PlayerAction(PlayerActionType.Raise, (int)(analysisResult.PotOdds * 10f));
             }
 

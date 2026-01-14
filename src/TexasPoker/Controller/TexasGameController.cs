@@ -27,7 +27,7 @@ namespace TexasPoker.Controller
         // -- 游戏状态 --
         public GamePhase CurrentPhase { get; private set; }
         // 庄家索引
-        private int _dealerIndes = 0;
+        private int _dealerIndex = 0;
         // 游戏结束标志
         private bool _isGameOver = false;
         // 当前玩家
@@ -108,7 +108,7 @@ namespace TexasPoker.Controller
             // 2. 底牌圈 PreFlop
             await NotifyPhase(GamePhase.PreFlop);
             // 下盲注
-            _bettingManager.PostBlinds(_players[_dealerIndes], _players[(_dealerIndes + 1) % _players.Count]);
+            _bettingManager.PostBlinds(_players[_dealerIndex], _players[(_dealerIndex + 1) % _players.Count]);
             // 通知表现层，更新筹码
             foreach (var player in _players) {
                 OnChipsUpdated?.Invoke(player, player.Chips);
@@ -168,7 +168,7 @@ namespace TexasPoker.Controller
             }
 
             // 交换庄家位置
-            _dealerIndes = (_dealerIndes + 1) % _players.Count;
+            _dealerIndex = (_dealerIndex + 1) % _players.Count;
         } 
 
         // 通知表现层当前进入了哪个阶段，并等待表现层处理

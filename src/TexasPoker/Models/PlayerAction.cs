@@ -12,7 +12,7 @@ namespace TexasPoker.Models
         public PlayerActionType Type { get; set; }
         public int Amount { get; set; }
 
-        public PlayerAction(PlayerActionType type, int amount)
+        public PlayerAction(PlayerActionType type, int amount = 0)
         {
             Type = type;
             Amount = amount;

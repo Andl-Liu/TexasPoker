@@ -309,5 +309,36 @@ namespace TexasPoker.Controller
 
             return true;
         }
+
+        // ---- 获取当前牌桌的上下文 ----
+
+        public TableContext GetTableContext()
+        {
+            return GetTableContext(GetCurrentPlayer());
+        }
+
+        public TableContext GetTableContext(Player player)
+        {
+            // 1.计算当前实时底池
+            // 真实的底池 = Pot里的钱 + 这一轮桌上大家还没有收进Pot的筹码
+            int currentRoundBets = _players.Sum(p => p.CurrentBet);
+            int potSize = _pot.TotalAmount + currentRoundBets;
+
+            // 2.获取下注规则数据
+            int amountToCall = _bettingManager.GetAmountToCall(player);
+            int minRaiseAmount = _bettingManager.MinRaiseAmount;
+
+            // 3.生成快照
+            return new TableContext
+            {
+                GamePhase = CurrentPhase.ToString(),
+                PotSize = potSize,
+                CommunityCardsCount = _communityCards.Count,
+                MyChips = player.Chips,
+                MyCurrentBet = player.CurrentBet,
+                AmountToCall = amountToCall,
+                MinRaiseAmount = minRaiseAmount
+            };
+       }
     }
 }

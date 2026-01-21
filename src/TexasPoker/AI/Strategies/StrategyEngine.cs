@@ -28,6 +28,7 @@ namespace TexasPoker.AI.Strategies
 
             // 如果赔率划算且不是太离谱，尝试Check
             if (goodPotOdds && courage > 0.40f) return new PlayerAction(PlayerActionType.Check, 0);
+            
 
             // 诈唬
             if (random.NextDouble() < npc.BluffFrequency) {

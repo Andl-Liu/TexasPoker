@@ -19,6 +19,8 @@ namespace TexasPoker.Logic
         public int CurrentMaxBet { get; private set; }
         // 最后一次加注的幅度
         public int LastRaiseAmount { get; private set; }
+        // 最小加注额
+        public int MinRaiseAmount => CurrentMaxBet + SmallBlind;
 
         public BettingManager(int smallBlind, int bigBlind)
         {
@@ -69,8 +71,7 @@ namespace TexasPoker.Logic
 
                 case PlayerActionType.Raise:
                     // amount 是玩家想要加注到的总额
-                    // 加注的总额必须 >= 当前最高注 + 最小加注幅度
-                    int minTotal = CurrentMaxBet + LastRaiseAmount;
+                    int minTotal = MinRaiseAmount;
                     if (amount < minTotal && amount < player.Chips + player.CurrentBet) {
                         errorMessage = $"加注额不足，至少要加注到 {minTotal}";
                         return false;

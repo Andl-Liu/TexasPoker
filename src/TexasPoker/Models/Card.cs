@@ -7,13 +7,18 @@ using TexasPoker.Enums;
 namespace TexasPoker.Models
 {
     // 德州扑克中的一张牌
-    public class Card(Suit suit, Rank rank)
+    public class Card
     {
-
         // 获得牌面和花色
         // 创建之后不可变
-        public Suit Suit { get; } = suit;
-        public Rank Rank { get; } = rank;
+        public Suit Suit { get; }
+        public Rank Rank { get; }
+
+        public Card(Suit suit, Rank rank)
+        {
+            Suit = suit;
+            Rank = rank;
+        }
 
         public override string ToString()
         {

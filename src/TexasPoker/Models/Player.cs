@@ -29,14 +29,14 @@ namespace TexasPoker.Models
         public Player(string name, int initialChips) {
             Name = name;
             Chips = initialChips;
-            Hand = [];
+            Hand = new List<Card>();
             RestForNewHand();
         }
 
         public Player(string name, int initialChips, bool isPlayer) {
             Name = name;
             Chips = initialChips;
-            Hand = [];
+            Hand = new List<Card>();
             IsPlayer = isPlayer;
             RestForNewHand();
         } 

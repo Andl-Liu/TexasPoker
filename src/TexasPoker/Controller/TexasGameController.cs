@@ -5,7 +5,6 @@ using System.Threading.Tasks;
 using TexasPoker.Logic;
 using TexasPoker.Enums;
 using TexasPoker.Models;
-using System.Diagnostics.Metrics;
 using System.Runtime.CompilerServices;
 
 namespace TexasPoker.Controller
@@ -85,7 +84,7 @@ namespace TexasPoker.Controller
             _bettingManager = new BettingManager(smallBlind, bigBlind);
             _deck = new Deck();
             _pot = new Pot();
-            _communityCards = [];
+            _communityCards = new List<Card>();
         }
 
         // -- 主驱动循环 --

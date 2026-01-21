@@ -12,6 +12,8 @@ namespace TexasPoker.AI.Strategies
 {
     public class StrategyEngine
     {
+        public static readonly Random random = new Random();
+
         public static PlayerAction Decide(NPCProfile npc, AnalysisResult analysisResult) {
             // 1. 结合性格计算“胆量因子”
             float courage = analysisResult.WinProbability + (npc.Aggression * 0.2f);
@@ -28,7 +30,7 @@ namespace TexasPoker.AI.Strategies
             if (goodPotOdds && courage > 0.40f) return new PlayerAction(PlayerActionType.Check, 0);
 
             // 诈唬
-            if (Random.Shared.NextDouble() < npc.BluffFrequency) {
+            if (random.NextDouble() < npc.BluffFrequency) {
                 Debug.Print($"诈唬：{npc.Name} StrategyEngine.Decide()");
                 return new PlayerAction(PlayerActionType.Raise, (int)(analysisResult.PotOdds * 10f));
             }

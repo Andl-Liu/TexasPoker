@@ -16,7 +16,7 @@ namespace TexasPoker.Logic
         private readonly Random rng;
 
         public Deck() {
-            cards = [];
+            cards = new List<Card>();
             rng = new Random();
             Reset();
         }
@@ -57,6 +57,6 @@ namespace TexasPoker.Logic
         public int GetCardCount() => cards.Count;
         
         // 获取所有牌的副本 - 用于测试
-        public List<Card> GetAllCards() => [..cards];
+        public List<Card> GetAllCards() => new List<Card>(cards);
     }
 }

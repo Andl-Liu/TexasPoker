@@ -1,8 +1,6 @@
 using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Reflection.Metadata;
-using System.Threading.Channels;
 using System.Threading.Tasks;
 using TexasPoker.Enums;
 using TexasPoker.Models;
@@ -14,6 +12,9 @@ namespace TexasPoker.AI.Analyst
     {
         // 模拟次数
         private const int SimulationCount = 1000;
+        
+        // 用于洗牌的随机数生成器实例
+        private static readonly Random randomInstance = new Random();
 
         // 除了pre-flop阶段之外，用这个分析
         public static async Task<AnalysisResult> Analyze(
@@ -101,7 +102,7 @@ namespace TexasPoker.AI.Analyst
         // 洗牌算法
         private static void Shuffle(List<Card> list) {
             for (int i = list.Count - 1; i > 0; i--) {
-                int j = Random.Shared.Next(i + 1);
+                int j = randomInstance.Next(i + 1);
                 (list[i], list[j]) = (list[j], list[i]);
             }
         }

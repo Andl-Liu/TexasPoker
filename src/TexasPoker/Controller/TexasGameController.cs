@@ -244,6 +244,9 @@ namespace TexasPoker.Controller
             // 情况A：只有一个人存活
             if (activePlayers.Count == 1) {
                 var winner = activePlayers[0];
+                // 派彩
+                _pot.Payout(winner);
+                // 更新筹码
                 OnChipsUpdated?.Invoke(winner, winner.Chips);
                 return;
             }
@@ -290,7 +293,7 @@ namespace TexasPoker.Controller
             // 如果是准备进入比牌阶段，且有多于一个玩家，则游戏继续
             if (isShowdown) 
                 return true;
-                
+
             // 检查还在局中的玩家数量
             int activePlayerCount = _players.Count(p => p.IsActive);
             // 如果只有一个玩家，则游戏结束

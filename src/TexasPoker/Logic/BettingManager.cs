@@ -20,7 +20,7 @@ namespace TexasPoker.Logic
         // 最后一次加注的幅度
         public int LastRaiseAmount { get; private set; }
         // 最小加注额
-        public int MinRaiseAmount => CurrentMaxBet + (LastRaiseAmount > 0 ? LastRaiseAmount : BigBlind);
+        public int MinRaiseAmount => CurrentMaxBet + Math.Max(SmallBlind, BigBlind);
 
         public BettingManager(int smallBlind, int bigBlind)
         {

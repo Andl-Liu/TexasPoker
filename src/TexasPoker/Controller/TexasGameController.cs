@@ -287,15 +287,15 @@ namespace TexasPoker.Controller
 
         // 判断流程是否继续
         private bool CanProceed(bool isShowdown = false) {
+            // 如果是准备进入比牌阶段，且有多于一个玩家，则游戏继续
+            if (isShowdown) 
+                return true;
+                
             // 检查还在局中的玩家数量
             int activePlayerCount = _players.Count(p => p.IsActive);
             // 如果只有一个玩家，则游戏结束
             if (activePlayerCount <= 1)
                 return false;
-
-            // 如果是准备进入比牌阶段，且有多于一个玩家，则游戏继续
-            if (isShowdown) 
-                return true;
 
             // 如果有人all in, 并且其余在局中的玩家要么all in, 要么跟注
             // 也就是如果没有人可以再下注，则跳过阶段

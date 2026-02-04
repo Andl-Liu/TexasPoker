@@ -52,7 +52,7 @@ namespace TexasPoker.Models
         // 下注逻辑
         public void Bet(int amount) {
             // 筹码不足，强制all in
-            if (amount > Chips) {
+            if (amount >= Chips) {
                 amount = Chips;
                 IsAllIn = true;
             }

@@ -77,9 +77,10 @@ namespace TexasPoker.Logic
                         return false;
                     }
 
-                    int raiseIncrement = amount - CurrentMaxBet;
-                    player.Bet(amount);
-                    LastRaiseAmount = raiseIncrement;
+                    // 计算差额
+                    player.Bet(amount - player.CurrentBet);
+                    // 更新当前最大注额
+                    LastRaiseAmount = amount - CurrentMaxBet;
                     CurrentMaxBet = amount;
                     break;
 

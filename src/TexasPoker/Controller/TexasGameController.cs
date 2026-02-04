@@ -227,6 +227,8 @@ namespace TexasPoker.Controller
                 cards.Add(card);
                 await Task.Delay(200); // 模拟发牌间隔
             }
+            // 将发的牌添加到公共牌列表中
+            _communityCards.AddRange(cards);
             // 通知表现层
             OnCommunityCardsDealt?.Invoke(cards);
 

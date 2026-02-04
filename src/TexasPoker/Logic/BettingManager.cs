@@ -20,7 +20,7 @@ namespace TexasPoker.Logic
         // 最后一次加注的幅度
         public int LastRaiseAmount { get; private set; }
         // 最小加注额
-        public int MinRaiseAmount => CurrentMaxBet + SmallBlind;
+        public int MinRaiseAmount => CurrentMaxBet + (LastRaiseAmount > 0 ? LastRaiseAmount : BigBlind);
 
         public BettingManager(int smallBlind, int bigBlind)
         {
@@ -88,7 +88,23 @@ namespace TexasPoker.Logic
                     break;
 
                 case PlayerActionType.AllIn:
+                    // 计算玩家AllIn后的总下注额（当前已下注 + 剩余筹码）
+                    int finalBetAmount = player.CurrentBet + player.Chips;
+
+                    // 执行扣款和状态变更
                     player.AllIn();
+
+                    // 如果All-In金额超过了当前最大注额，视为Raise行为
+                    if (finalBetAmount > CurrentMaxBet)
+                    {
+                        int allInRaiseIncrement = finalBetAmount - CurrentMaxBet;
+                        if (allInRaiseIncrement >= LastRaiseAmount)
+                        {
+                            LastRaiseAmount = allInRaiseIncrement;
+                        }
+                        CurrentMaxBet = finalBetAmount;
+                    }
+
                     break;
             }
 
@@ -97,6 +113,7 @@ namespace TexasPoker.Logic
 
         // 判断下注轮是否结束
         // 所有活跃玩家的CurrentBet相等,为CurrentMaxBet
+        // 或者已经all in
         public bool IsBettingRoundOver(List<Player> players) {
             int activePlayer = 0;
             int finishedPlayer = 0;
@@ -104,7 +121,7 @@ namespace TexasPoker.Logic
             foreach (var player in players) {
                 if (player.IsActive) {
                     activePlayer++;
-                    if (player.CurrentBet == CurrentMaxBet) {
+                    if (player.CurrentBet == CurrentMaxBet || player.IsAllIn) {
                         finishedPlayer++;
                     }
                 }

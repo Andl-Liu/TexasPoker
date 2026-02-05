@@ -195,6 +195,12 @@ namespace TexasPoker.Controller
         }
 
         private async Task HandleBettingRound() {
+            // 在新的一轮下注之前，重置所有活跃玩家的行动状态
+            foreach (var player in _players) {
+                if (player.IsActive)
+                    player.HasActed = false;
+            }
+
             // 只要下注还没平衡，且至少有两人在玩
             while (!_bettingManager.IsBettingRoundOver(_players) && _players.Count(p => p.IsActive) > 1) {
                 // 现在是谁在说话

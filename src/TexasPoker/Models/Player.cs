@@ -24,6 +24,8 @@ namespace TexasPoker.Models
         public bool IsAllIn { get; private set; }
         // 是否还在局中
         public bool IsActive => !IsFold;
+        // 本轮是否已经行动过
+        public bool HasActed { get; set; } = false;
 
         // 创建玩家
         public Player(string name, int initialChips) {
@@ -47,6 +49,7 @@ namespace TexasPoker.Models
             CurrentBet = 0;
             IsFold = false;
             IsAllIn = false;
+            HasActed = false;
         }
 
         // 下注逻辑

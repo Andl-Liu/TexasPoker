@@ -109,10 +109,13 @@ namespace TexasPoker.Logic
                     break;
             }
 
+            // 玩家已经行动过
+            player.HasActed = true;
             return true;
         }
 
         // 判断下注轮是否结束
+        // 玩家已经行动过
         // 所有活跃玩家的CurrentBet相等,为CurrentMaxBet
         // 或者已经all in
         public bool IsBettingRoundOver(List<Player> players) {
@@ -122,7 +125,12 @@ namespace TexasPoker.Logic
             foreach (var player in players) {
                 if (player.IsActive) {
                     activePlayer++;
-                    if (player.CurrentBet == CurrentMaxBet || player.IsAllIn) {
+                    // 判定条件
+                    // 1. 当前下注额等于当前最大下注额
+                    // 2. 已经行动过
+                    // 3. 或者玩家已经all in
+                    bool isBetMatched = player.CurrentBet == CurrentMaxBet;
+                    if ((isBetMatched && player.HasActed) || player.IsAllIn) {
                         finishedPlayer++;
                     }
                 }

@@ -130,5 +130,41 @@ namespace TexasPoker.Logic
 
             return activePlayer == finishedPlayer;
         }
+
+        // 处理双人局中有一方超额下注退还的问题
+        // 返回值：（被退款的玩家，被退款的筹码）
+        public (Player, int) ResolveHeadsUpOverbets(List<Player> activePlayers)
+        {
+            // 1. 只有两个人，且有人All In时触发
+            if (activePlayers.Count != 2 || !activePlayers.Any(p => p.IsAllIn))
+            {
+                return (null, 0);
+            }
+
+            var p1 = activePlayers[0];
+            var p2 = activePlayers[1];
+
+            // 2. 如果下注相等，无需处理
+            if (p1.CurrentBet == p2.CurrentBet)
+            {
+                return (null, 0);
+            }
+
+            // 3. 找出下注多的人和下注少的人
+            var bigBetter = p1.CurrentBet > p2.CurrentBet ? p1 : p2;
+            var smallBetter = p1.CurrentBet < p2.CurrentBet ? p1 : p2;
+
+            // 4. 计算并执行退款
+            int excess = bigBetter.CurrentBet - smallBetter.CurrentBet;
+            bigBetter.RefundBet(excess);
+
+            // 5. 修正最大下注额
+            if (CurrentMaxBet == bigBetter.CurrentBet + excess)
+            {
+                CurrentMaxBet = bigBetter.CurrentBet;
+            }
+
+            return (bigBetter, excess);
+        }
     }
 }

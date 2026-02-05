@@ -81,5 +81,21 @@ namespace TexasPoker.Models
         public void ClearCurrentBet() {
             CurrentBet = 0;
         }
+
+        // 退还部分下注
+        public void RefundBet(int amount)
+        {
+            if (amount <= 0 || amount > CurrentBet) 
+                return;
+            
+            CurrentBet -= amount;
+            Chips += amount;
+
+            if (Chips > 0)
+            {
+                IsAllIn = false;
+            }
+        }
+
     }
 }

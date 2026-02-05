@@ -68,6 +68,13 @@ namespace TexasPoker.Controller
         /// <param name="actionType">执行的操作类型</param>
         /// <param name="amount">操作涉及的金额（如果有的话）</param>
         public event Action<Player, PlayerActionType, int> OnPlayerActionExecuted;
+
+        /// <summary>
+        /// 当发生退款时触发的事件
+        /// </summary>
+        /// <param name="player">发生退款的玩家</param>
+        /// <param name="amount">退款金额</param>
+        public event Action<Player, int> OnRefund;
         
         public event Action<Player> OnTurnStarted;
 
@@ -209,6 +216,21 @@ namespace TexasPoker.Controller
                 OnPlayerActionExecuted?.Invoke(player, action.Type, action.Amount);
                 OnChipsUpdated?.Invoke(player, player.Chips);
                 AdvanceToNextPlayer();
+            }
+
+            // 处理多余的筹码退还
+            // 获取当前的活跃玩家
+            var activePlayers = _players.Where(p => p.IsActive).ToList();
+
+            // 检查
+            var result = _bettingManager.ResolveHeadsUpOverbets(activePlayers);
+            if (result.Item1 != null)
+            {
+                Player refundedPlayer = result.Item1;
+                int refundedAmount = result.Item2;
+
+                OnChipsUpdated?.Invoke(refundedPlayer, refundedPlayer.Chips);
+                OnRefund?.Invoke(refundedPlayer, refundedAmount);
             }
 
             // 收集赌注

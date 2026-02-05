@@ -254,6 +254,9 @@ namespace TexasPoker.Controller
             // 通知表现层
             OnCommunityCardsDealt?.Invoke(cards);
 
+            // 重置投注管理
+            _bettingManager.ResetRound();
+
             // 进入下注阶段
             await HandleBettingRound();
         }
